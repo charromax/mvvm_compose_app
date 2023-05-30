@@ -6,4 +6,7 @@ A simple app where users can make posts about their favorite games
 - MVVM
 - Firebase Firestore
 - Firebase Authentication
+- Firebase Storage
 - Flow
+- GSON
+- COIL
