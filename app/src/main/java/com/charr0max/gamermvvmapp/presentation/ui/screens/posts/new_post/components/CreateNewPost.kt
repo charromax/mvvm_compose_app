@@ -1,17 +1,16 @@
-package com.charr0max.gamermvvmapp.presentation.ui.screens.login.components
+package com.charr0max.gamermvvmapp.presentation.ui.screens.posts.new_post.components
 
 import android.widget.Toast
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.charr0max.gamermvvmapp.domain.model.Response
 import com.charr0max.gamermvvmapp.presentation.ui.screens.components.LoadingComponent
-import com.charr0max.gamermvvmapp.presentation.ui.screens.login.LoginViewModel
+import com.charr0max.gamermvvmapp.presentation.ui.screens.posts.new_post.NewPostViewModel
 
 @Composable
-fun Login(loginViewModel: LoginViewModel = hiltViewModel(), onLoginSuccess: () -> Unit) {
-    when (val res = loginViewModel.loginResponse) {
+fun CreateNewPost(viewModel: NewPostViewModel = hiltViewModel()) {
+    when (val res = viewModel.createPostResponse) {
         null -> return
         is Response.Failure -> {
             Toast.makeText(
@@ -26,8 +25,13 @@ fun Login(loginViewModel: LoginViewModel = hiltViewModel(), onLoginSuccess: () -
         }
 
         is Response.Success -> {
-            LaunchedEffect(Unit) {
-                onLoginSuccess()
+            if (res.data) {
+                Toast.makeText(
+                    LocalContext.current,
+                    "Post created successfully!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                viewModel.clearForm()
             }
         }
     }

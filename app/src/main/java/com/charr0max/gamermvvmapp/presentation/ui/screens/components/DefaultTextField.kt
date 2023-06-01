@@ -32,6 +32,7 @@ fun DefaultTextField(
     Column {
         OutlinedTextField(
             value = value,
+            minLines = 3,
             modifier = modifier,
             label = { Text(text = label) },
             leadingIcon = {

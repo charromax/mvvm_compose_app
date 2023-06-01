@@ -9,13 +9,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.charr0max.gamermvvmapp.presentation.ui.screens.components.DefaultButton
 import com.charr0max.gamermvvmapp.presentation.ui.screens.components.TopBar
+import com.charr0max.gamermvvmapp.presentation.ui.screens.posts.new_post.components.CreateNewPost
 import com.charr0max.gamermvvmapp.presentation.ui.screens.posts.new_post.components.NewPostContent
 
 @Composable
-fun NewPostScreen(navHostController: NavHostController) {
+fun NewPostScreen(navHostController: NavHostController, viewModel: NewPostViewModel = hiltViewModel()) {
     Scaffold(
         topBar = { TopBar(title = "New Post", navHostController = navHostController) },
         content = {
@@ -29,10 +31,9 @@ fun NewPostScreen(navHostController: NavHostController) {
                 icon = Icons.Default.ArrowForward,
                 label = "Publish"
             ) {
-
+                viewModel.onNewPost()
             }
         }
-
     )
-
+    CreateNewPost()
 }

@@ -54,7 +54,7 @@ fun EditProfileContent(
             .fillMaxWidth()
             .padding(paddingValues = paddingValues),
     ) {
-        BoxHeader(viewModel = viewModel, onImageClick = {
+        BoxHeader(imageUrl = viewModel.state.imageUrl, onImageClick = {
             viewModel.dialogState.value = true
         })
         EditProfileCard(viewModel)

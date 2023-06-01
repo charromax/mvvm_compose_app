@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,6 +33,7 @@ fun BoxHeader(
     onImageClick: (() -> Unit)? = null,
     defaultImage: Int? = null,
     defaultTitle: String? = null,
+    shouldClip: Boolean = true,
 ) {
     Box(
         modifier = Modifier
@@ -48,7 +50,7 @@ fun BoxHeader(
                         .padding(top = 20.dp)
                         .height(100.dp)
                         .width(100.dp)
-                        .clip(CircleShape)
+                        .clip(if(shouldClip) CircleShape else RoundedCornerShape(1.dp))
                         .clickable {
                             onImageClick?.invoke()
                         },
@@ -62,7 +64,7 @@ fun BoxHeader(
                         .padding(top = 20.dp)
                         .height(100.dp)
                         .width(100.dp)
-                        .clip(if (defaultImage != null) RoundedCornerShape(10.dp) else CircleShape)
+                        .clip(if (shouldClip) CircleShape else RoundedCornerShape(1.dp))
                         .clickable { onImageClick?.invoke() },
                     painter = painterResource(id = defaultImage ?: R.drawable.user),
                     contentDescription = null,

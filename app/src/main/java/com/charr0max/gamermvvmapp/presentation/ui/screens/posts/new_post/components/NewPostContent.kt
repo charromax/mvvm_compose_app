@@ -1,5 +1,10 @@
 package com.charr0max.gamermvvmapp.presentation.ui.screens.posts.new_post.components
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -28,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.charr0max.gamermvvmapp.R
 import com.charr0max.gamermvvmapp.presentation.ui.screens.components.DefaultTextField
+import com.charr0max.gamermvvmapp.presentation.ui.screens.dialog.DialogCapturePicture
 import com.charr0max.gamermvvmapp.presentation.ui.screens.posts.new_post.NewPostViewModel
 import com.charr0max.gamermvvmapp.presentation.ui.screens.signup.components.BoxHeader
 
@@ -36,6 +43,31 @@ fun NewPostContent(
     paddingValues: PaddingValues,
     viewModel: NewPostViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
+    viewModel.resultingActivityHandler.handle()
+    val cameraPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { granted ->
+            if (granted) {
+                viewModel.takePhoto()
+            } else {
+                Toast.makeText(context, "We need camera permission", Toast.LENGTH_SHORT).show()
+            }
+        }
+    )
+    val dialogState = viewModel.dialogState
+    DialogCapturePicture(
+        status = dialogState,
+        takePhoto = {
+            if (context.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                viewModel.takePhoto()
+            } else {
+                cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+            }
+        },
+        pickImage = { viewModel.pickImage() }
+    )
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -49,7 +81,11 @@ fun NewPostContent(
         ) {
             val state = viewModel.state
             BoxHeader(
-                defaultImage = R.drawable.add_image, defaultTitle = "Select a picture"
+                defaultImage = R.drawable.add_image,
+                imageUrl = viewModel.state.image,
+                defaultTitle = "Select a picture",
+                onImageClick = { viewModel.dialogState.value = true },
+                shouldClip = false
             )
             DefaultTextField(modifier = Modifier
                 .fillMaxWidth()
@@ -68,7 +104,7 @@ fun NewPostContent(
                 .fillMaxWidth()
                 .padding(start = 20.dp, end = 20.dp),
                 value = state.description,
-                icon = Icons.Default.List,
+                singleLine = false,
                 onValueChange = {
                     viewModel.onDescriptionInput(it)
                 },

@@ -10,7 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.charr0max.gamermvvmapp.presentation.ui.screens.posts.MyPostsScreen
-import com.charr0max.gamermvvmapp.presentation.ui.screens.posts.PostsScreen
+import com.charr0max.gamermvvmapp.presentation.ui.screens.posts.posts.PostsScreen
 import com.charr0max.gamermvvmapp.presentation.ui.screens.profile.ProfileScreen
 
 @Composable

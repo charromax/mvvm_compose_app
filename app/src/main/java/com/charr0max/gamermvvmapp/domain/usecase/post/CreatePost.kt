@@ -1,4 +1,12 @@
 package com.charr0max.gamermvvmapp.domain.usecase.post
 
-class CreatePost {
+import com.charr0max.gamermvvmapp.domain.model.Post
+import com.charr0max.gamermvvmapp.domain.repository.PostRepository
+import java.io.File
+import javax.inject.Inject
+
+class CreatePost @Inject constructor(
+    private val repo: PostRepository
+) {
+    suspend operator fun invoke(post: Post, file: File) = repo.create(post, file)
 }

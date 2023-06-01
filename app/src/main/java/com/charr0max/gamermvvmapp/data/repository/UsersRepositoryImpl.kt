@@ -2,6 +2,7 @@ package com.charr0max.gamermvvmapp.data.repository
 
 import android.net.Uri
 import android.util.Log
+import com.charr0max.gamermvvmapp.data.core.Constants.USERS
 import com.charr0max.gamermvvmapp.domain.model.Response
 import com.charr0max.gamermvvmapp.domain.model.User
 import com.charr0max.gamermvvmapp.domain.repository.UsersRepository
@@ -16,11 +17,12 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
+import javax.inject.Named
 
 class UsersRepositoryImpl @Inject constructor(
-    private val usersRef: CollectionReference,
-    private val imageStorageRef: StorageReference,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    @Named(USERS) private val usersRef: CollectionReference,
+    @Named(USERS) private val imageStorageRef: StorageReference,
+    private val dispatcher: CoroutineDispatcher
 ) : UsersRepository {
     override suspend fun create(user: User): Response<Boolean> {
         return withContext(dispatcher) {
