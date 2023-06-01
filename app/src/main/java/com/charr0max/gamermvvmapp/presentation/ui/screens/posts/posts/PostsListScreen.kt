@@ -1,4 +1,4 @@
-package com.charr0max.gamermvvmapp.presentation.ui.screens.posts
+package com.charr0max.gamermvvmapp.presentation.ui.screens.posts.posts
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
