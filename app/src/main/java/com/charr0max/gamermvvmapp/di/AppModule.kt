@@ -16,8 +16,13 @@ import com.charr0max.gamermvvmapp.domain.usecase.auth.LoginUseCase
 import com.charr0max.gamermvvmapp.domain.usecase.auth.LogoutUseCase
 import com.charr0max.gamermvvmapp.domain.usecase.auth.SignUpUseCase
 import com.charr0max.gamermvvmapp.domain.usecase.post.CreatePost
+import com.charr0max.gamermvvmapp.domain.usecase.post.DeletePost
 import com.charr0max.gamermvvmapp.domain.usecase.post.GetPosts
+import com.charr0max.gamermvvmapp.domain.usecase.post.GetPostsByUserID
+import com.charr0max.gamermvvmapp.domain.usecase.post.LikePost
 import com.charr0max.gamermvvmapp.domain.usecase.post.PostUseCases
+import com.charr0max.gamermvvmapp.domain.usecase.post.UnlikePost
+import com.charr0max.gamermvvmapp.domain.usecase.post.UpdatePost
 import com.charr0max.gamermvvmapp.domain.usecase.user.CreateUser
 import com.charr0max.gamermvvmapp.domain.usecase.user.GetUserInfoById
 import com.charr0max.gamermvvmapp.domain.usecase.user.UpdateUser
@@ -55,6 +60,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideFirebaseStorage(): FirebaseStorage = FirebaseStorage.getInstance()
+
     @Provides
     @Singleton
     fun provideCoroutineDispatcher(): CoroutineDispatcher = Dispatchers.IO
@@ -86,7 +92,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAuthRepository(impl:AuthRepositoryImpl): AuthRepository = impl
+    fun provideAuthRepository(impl: AuthRepositoryImpl): AuthRepository = impl
 
     @Provides
     @Singleton
@@ -121,7 +127,15 @@ object AppModule {
     @Provides
     @Singleton
     fun providePostUseCases(postRepository: PostRepository): PostUseCases {
-        return PostUseCases(CreatePost(postRepository), GetPosts(postRepository))
+        return PostUseCases(
+            CreatePost(postRepository),
+            UpdatePost(postRepository),
+            DeletePost(postRepository),
+            GetPosts(postRepository),
+            GetPostsByUserID(postRepository),
+            LikePost(postRepository),
+            UnlikePost(postRepository),
+        )
     }
 
     @Provides
